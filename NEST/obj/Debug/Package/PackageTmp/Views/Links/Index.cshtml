@@ -11,10 +11,9 @@
 <h1>@ViewBag.Title</h1>
 </div>
 <div class="main-inner">
-    <div id="main-content" class="radius">
+    <div id="main-content" class="radius" >
 
-    <p></p>
-
+    <div style="display:inline-block; float:left;width:50%;">
 
 @foreach (var item in Model) {
            
@@ -26,4 +25,7 @@
 
 }
     </div>
+@Html.Partial("~/Views/Shared/_TwitterFeed.cshtml")
+    </div>
+    
 </div>

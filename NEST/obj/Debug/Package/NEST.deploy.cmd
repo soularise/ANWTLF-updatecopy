@@ -10,17 +10,20 @@ setlocal
 @rem ---------------------------------------------------------------------------------
 @rem Please Make sure you have Web Deploy install in your machine. 
 @rem Alternatively, you can explicit set the MsDeployPath to the location it is on your machine
-@rem set MSDeployPath="C:\Program Files\IIS\Microsoft Web Deploy\"
+@rem set MSDeployPath="C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\"
 @rem ---------------------------------------------------------------------------------
                       
 @rem ---------------------------------------------------------------------------------
 @rem if user does not set MsDeployPath environment variable, we will try to retrieve it from registry.
 @rem ---------------------------------------------------------------------------------
 if "%MSDeployPath%" == "" (
-for /F "usebackq tokens=2*" %%i  in (`reg query "HKLM\SOFTWARE\Microsoft\IIS Extensions\MSDeploy\1" /v InstallPath`) do (
+for /F "usebackq tokens=1,2,*" %%h  in (`reg query "HKLM\SOFTWARE\Microsoft\IIS Extensions\MSDeploy" /s  ^| findstr -i "InstallPath"`) do (
+if /I "%%h" == "InstallPath" ( 
+if /I "%%i" == "REG_SZ" ( 
+if not "%%j" == "" ( 
 if "%%~dpj" == "%%j" ( 
 set MSDeployPath=%%j
-)))
+))))))
 
 if not exist "%MSDeployPath%\msdeploy.exe" (
 echo. msdeploy.exe is not found on this machine. Please install Web Deploy before execute the script. 
@@ -42,16 +45,21 @@ set _ArgEncryptPassword=
 set _ArgIncludeAcls=False
 set _ArgAuthType=
 set _ArgtempAgent=
-
+set _ArgLocalIIS=
+set _ArgLocalIISVersion=
+                      
+                      
 @rem ---------------------------------------------------------------------------------
 @rem Simple Parse the arguments
 @rem ---------------------------------------------------------------------------------
 :NextArgument
+set _ArgCurrentOriginal=%1
 set _ArgCurrent=%~1
 
 if /I "%_ArgCurrent%" == "" goto :GetStarted
 if /I "%_ArgCurrent%" == "/T" set _ArgTestDeploy=true&goto :ArgumentOK
 if /I "%_ArgCurrent%" == "/Y" set _ArgTestDeploy=false&goto :ArgumentOK
+if /I "%_ArgCurrent%" == "/L" set _ArgLocalIIS=true&goto :ArgumentOK
 
 set _ArgFlag=%_ArgCurrent:~0,3%
 set _ArgValue=%_ArgCurrent:~3%
@@ -65,7 +73,7 @@ if /I "%_ArgFlag%" == "/A:" set _ArgAuthType=%_ArgValue%&goto :ArgumentOK
 if /I "%_ArgFlag%" == "/G:" set _ArgtempAgent=%_ArgValue%&goto :ArgumentOK
 
 @rem Any addition flags, pass through to the msdeploy
-set _ArgMsDeployAdditionalFlags=%_ArgMsDeployAdditionalFlags% %_ArgCurrent%
+set _ArgMsDeployAdditionalFlags=%_ArgMsDeployAdditionalFlags% %_ArgCurrentOriginal%
 
 :ArgumentOK
 shift
@@ -92,6 +100,30 @@ set _MsDeployAdditionalFlags=%_MsDeployAdditionalFlags% -whatif
 )
 
 @rem ---------------------------------------------------------------------------------
+@rem add flags for IISExpress when -L is specified                      
+@rem ---------------------------------------------------------------------------------
+
+if /I "%_ArgLocalIIS%" == "true" (
+call :SetIISExpressArguments
+)
+if /I "%_ArgLocalIIS%" == "true" (
+if not exist "%IISExpressPath%%IISExpressManifest%" (
+echo. IISExpress is not found on this machine. Please install through Web Platform Installer before execute the script. 
+echo. or remove /L flag
+echo. Please visit http://go.microsoft.com/?linkid=9278654
+goto :usage
+)
+if not exist "%IISExpressUserProfileDirectory%" (
+echo. %IISExpressUserProfileDirectory% is not exists
+echo. IISExpress is found on the machine. But the user have run IISExpress at least once.
+echo. Please visit http://go.microsoft.com/?linkid=9278654 for detail
+goto :usage
+)
+                      
+set _MsDeployAdditionalFlags=%_MsDeployAdditionalFlags% -appHostConfigDir:%IISExpressUserProfileDirectory% -WebServerDir:"%IISExpressPath%" -webServerManifest:"%IISExpressManifest%"
+)
+
+@rem ---------------------------------------------------------------------------------
 @rem pass through the addition msdeploy.exe Flags
 @rem ---------------------------------------------------------------------------------
 set _MsDeployAdditionalFlags=%_MsDeployAdditionalFlags% %_ArgMsDeployAdditionalFlags%
@@ -104,7 +136,7 @@ echo "%RootPath%NEST.zip" does not exist.
 echo This batch file relies on this deploy source file^(s^) in the same folder.
 goto :usage
 )
-
+                      
 @rem ---------------------------------------------------------------------------------
 @rem Execute msdeploy.exe command line
 @rem ---------------------------------------------------------------------------------
@@ -120,6 +152,54 @@ echo. "%MSDeployPath%\msdeploy.exe" -source:package='%RootPath%NEST.zip' -dest:%
 )
 goto :eof
 
+@rem ---------------------------------------------------------------------------------
+@rem Find and set IISExpress argument.
+@rem ---------------------------------------------------------------------------------
+:SetIISExpressArguments
+                      
+if "%IISExpressPath%" == "" (
+for /F "usebackq tokens=1,2,*" %%h  in (`reg query "HKLM\SOFTWARE\Microsoft\IISExpress" /s  ^| findstr -i "InstallPath"`) do (
+if /I "%%h" == "InstallPath" ( 
+if /I "%%i" == "REG_SZ" ( 
+if not "%%j" == "" ( 
+if "%%~dpj" == "%%j" ( 
+set IISExpressPath=%%j
+))))))
+
+if "%IISExpressPath%" == "" (
+for /F "usebackq tokens=1,2,*" %%h  in (`reg query "HKLM\SOFTWARE\Wow6432Node\Microsoft\IISExpress" /s  ^| findstr -i "InstallPath"`) do (
+if /I "%%h" == "InstallPath" ( 
+if /I "%%i" == "REG_SZ" ( 
+if not "%%j" == "" ( 
+if "%%~dpj" == "%%j" ( 
+set IISExpressPath=%%j
+))))))
+
+if "%PersonalDocumentFolder%" == "" (
+for /F "usebackq tokens=2*" %%i  in (`reg query "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v Personal`) do (
+set PersonalDocumentFolder=%%j
+))
+
+if "%IISExpressManifest%" == "" (
+for /F "usebackq tokens=1,2,*" %%h  in (`reg query "HKLM\SOFTWARE\Microsoft\IISExpress" /s  ^| findstr -i "Manifest"`) do (
+if /I "%%h" == "Manifest" ( 
+if /I "%%i" == "REG_SZ" ( 
+if not "%%j" == "" ( 
+set IISExpressManifest=%%j
+)))))
+
+if "%IISExpressManifest%" == "" (
+for /F "usebackq tokens=1,2,*" %%h  in (`reg query "HKLM\SOFTWARE\Wow6432Node\Microsoft\IISExpress" /s  ^| findstr -i "Manifest"`) do (
+if /I "%%h" == "Manifest" ( 
+if /I "%%i" == "REG_SZ" ( 
+if not "%%j" == "" ( 
+set IISExpressManifest=%%j
+)))))
+                      
+set IISExpressUserProfileDirectory="%PersonalDocumentFolder%\IISExpress\config"
+
+goto :eof                      
+                      
 @rem ---------------------------------------------------------------------------------
 @rem CheckParameterFile -- check if the package's setparamters.xml exists or not
 @rem ---------------------------------------------------------------------------------
@@ -154,6 +234,10 @@ echo /M:  Msdeploy destination name of remote computer or proxy-URL. Default is 
 echo /U:  Msdeploy destination user name. 
 echo /P:  Msdeploy destination password.
 echo /G:  Msdeploy destination tempAgent. True or False. Default is false.
+echo /A:  specifies the type of authentication to be used. The possible values are NTLM and Basic. If the wmsvc provider setting is specified, the default authentication type is Basic
+otherwise, the default authentication type is NTLM.
+echo /L:  Deploy to Local IISExpress User Instance.  
+
 echo.[additional msdeploy flags]: note: " is required for passing = through command line.
 echo  "-skip:objectName=setAcl" "-skip:objectName=dbFullSql"
 echo.Alternative environment variable _MsDeployAdditionalFlags is also honored.
@@ -169,21 +253,4 @@ echo For more information about this batch file, visit http://go.microsoft.com/f
 start notepad "%RootPath%NEST.deploy-readme.txt"
 )
 echo =========================================================
-goto :eof
-
-@rem ---------------------------------------------------------------------------------
-@rem CheckParameterFile -- check if the package's setparamters.xml exists or not
-@rem ---------------------------------------------------------------------------------
-:CheckParameterFile
-echo =========================================================
-if  exist "%RootPath%NEST.SetParameters.xml" (
-echo SetParameters from:
-echo "%RootPath%NEST.SetParameters.xml"
-echo You can change IIS Application Name, Physical path, connectionString
-echo or other deploy parameters in the above file.
-) else (
-echo SetParamterFiles does not exist in package location.
-echo Use package embedded defaultValue to deploy.
-)
-echo -------------------------------------------------------
 goto :eof

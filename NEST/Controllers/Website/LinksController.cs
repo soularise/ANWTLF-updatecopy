@@ -16,12 +16,12 @@ namespace NEST.Controllers
 
         private NESTV1Entities db = new NESTV1Entities();
 
-
         public ActionResult Index(string pagename)
         {
+            int id = 9;
             try
             {
-                var contentbodies = db.ContentBodies.Where(c => c.SEOUrl.ToLower() == pagename.ToLower()).OrderBy(s => s.SortOrder);
+                var contentbodies = db.ContentBodies.Where(c => c.ContentSection_ID == id).OrderBy(s => s.SortOrder);
                 return View(contentbodies.ToList());
             }
             catch
@@ -29,6 +29,14 @@ namespace NEST.Controllers
                 return View();
 
             }
+        }
+
+
+
+        public ActionResult Details(int id)
+        {
+            ContentBody contentbody = db.ContentBodies.Single(c => c.Id == id);
+            return View(contentbody);
         }
 
 

@@ -33,3 +33,10 @@ C:\VisualStudioProjects\Source\ANWTLF\ANWTLF\NEST\bin\EntityFramework.xml
 C:\VisualStudioProjects\Source\ANWTLF\ANWTLF\NEST\obj\Debug\ResolveAssemblyReference.cache
 C:\VisualStudioProjects\Source\ANWTLF\ANWTLF\NEST\obj\Debug\NEST.dll
 C:\VisualStudioProjects\Source\ANWTLF\ANWTLF\NEST\obj\Debug\NEST.pdb
+C:\Users\Russell Rogers\Documents\GitHub\ANWTLF-updatecopy\NEST\bin\NEST.dll
+C:\Users\Russell Rogers\Documents\GitHub\ANWTLF-updatecopy\NEST\bin\NEST.pdb
+C:\Users\Russell Rogers\Documents\GitHub\ANWTLF-updatecopy\NEST\bin\EntityFramework.dll
+C:\Users\Russell Rogers\Documents\GitHub\ANWTLF-updatecopy\NEST\bin\EntityFramework.xml
+C:\Users\Russell Rogers\Documents\GitHub\ANWTLF-updatecopy\NEST\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Russell Rogers\Documents\GitHub\ANWTLF-updatecopy\NEST\obj\Debug\NEST.dll
+C:\Users\Russell Rogers\Documents\GitHub\ANWTLF-updatecopy\NEST\obj\Debug\NEST.pdb

@@ -129,6 +129,8 @@
     <Content Include="App_Data\QuickJoins.txt" />
     <Content Include="Content\theme-rr\css\flexcrollstyles.css" />
     <Content Include="Content\theme-rr\css\tutorsty.css" />
+    <Content Include="Content\theme-rr\images\CivilDefenseLogo.PNG" />
+    <Content Include="Content\theme-rr\images\DMMLogo.PNG" />
     <Content Include="Downloadable\Wallpaper\iPhone\HeartBlack.jpg" />
     <Content Include="Downloadable\Wallpaper\iPhone\HeartCraft.jpg" />
     <Content Include="Downloadable\Wallpaper\iPhone\HeartGray.jpg" />
@@ -1115,6 +1117,7 @@
     <Content Include="Views\Shows\Index.cshtml" />
     <Content Include="Views\Shows\Details.cshtml" />
     <Content Include="Views\Store\Index.cshtml" />
+    <Content Include="Views\Shared\_TwitterFeed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />

@@ -9,7 +9,7 @@ This batch file requires that the package file "NEST.zip" and optionally provide
 ===========================
 Usage:
 --------------------------
-NEST.deploy.cmd [/T|/Y] [/M:ComputerName] [/U:UserName] [/P:Password] [/G:UseTempAgent] [Additional msdeploy.exe flags ...]
+{0} [/T|/Y] [/M:ComputerName] [/U:UserName] [/P:Password] [/G:UseTempAgent] [Additional msdeploy.exe flags ...]
 
 
 ===========================
@@ -39,6 +39,12 @@ Optional Flags:
 /P:<Password>
 /G:<True | False>
 	Specifies that the package is deployed by creating a temporary listener on the destination server. This requires no special installation on the destination server, but it requires you to be an administrator on that server. The default value of this flag is False. 
+
+/A:<Basic | NTLM>
+	Specifies the type of authentication to be used. The possible values are NTLM and Basic. If the wmsvc provider setting is specified, the default authentication type is Basic; otherwise, the default authentication type is NTLM. 
+
+/L 
+	Specifies that the package is deployed to local IISExpress user instance.
 
 [Additional msdeploy.exe flags]
 	The msdeploy.exe command supports additional flags. You can include any of these additional flags in the "$(ProjectName).Deploy.cmd" file, and the flags are passed through to msdeploy.exe during execution.

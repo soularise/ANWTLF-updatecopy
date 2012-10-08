@@ -11,7 +11,7 @@
 <div class="main-inner">
     <div id="main-content" class="radius">
 
-       <div class="home-intro-container">
+       <div class="home-intro-container" style="width:50%;display:inline-block; float:left;">
  
         @foreach (var item in Model) {
            
@@ -26,13 +26,12 @@
 
         }
        </div>
-       <!--
-       <div class="right-small-container">
-        
-        @RenderPage("~/views/shared/_PromotedContent.cshtml")
+      
 
-       </div>
-       --> 
+@Html.Partial("~/Views/Shared/_TwitterFeed.cshtml")
+
+
+       
     </div>
 
 </div>
