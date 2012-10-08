@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="NESTModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="NESTModelStoreContainer">
+    <EntitySet Name="Configurations" EntityType="NESTModel.Store.Configurations" store:Type="Tables" Schema="NESTSchema" />
+    <EntitySet Name="ContentBodies" EntityType="NESTModel.Store.ContentBodies" store:Type="Tables" Schema="NESTSchema" />
+    <EntitySet Name="ContentSections" EntityType="NESTModel.Store.ContentSections" store:Type="Tables" Schema="NESTSchema" />
+    <EntitySet Name="ContentTypes" EntityType="NESTModel.Store.ContentTypes" store:Type="Tables" Schema="NESTSchema" />
+    <EntitySet Name="Registrants" EntityType="NESTModel.Store.Registrants" store:Type="Tables" Schema="NESTSchema" />
+    <AssociationSet Name="FK_ContentSectionContentBody" Association="NESTModel.Store.FK_ContentSectionContentBody">
+      <End Role="ContentSections" EntitySet="ContentSections" />
+      <End Role="ContentBodies" EntitySet="ContentBodies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ContentSectionContentType" Association="NESTModel.Store.FK_ContentSectionContentType">
+      <End Role="ContentTypes" EntitySet="ContentTypes" />
+      <End Role="ContentSections" EntitySet="ContentSections" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Configurations">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GoogleAnalyticsAccount" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="TwitterAccount" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="FacebookPage" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="GooglePlusPage" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="SiteTitle" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="TagLine" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="BlogLink" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="RSSFeed" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="TwitterAnywhereAPIKey" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="WebsiteDomainName" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="LinkedInPage" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ICOImage" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="PromotedArticleID" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="ContentBodies">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="BodyText" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Type" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="SubHeader" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Promote" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CreationDate" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Owner" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ContentSection_ID" Type="int" Nullable="false" />
+    <Property Name="SortOrder" Type="int" Nullable="true" />
+    <Property Name="Icon" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="SEOUrl" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="TeaserText" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="MediaSourceURL" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="IFrameURL" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="IncludePageHeader" Type="nchar" Nullable="true" MaxLength="10" />
+    <Property Name="TitleSize" Type="nchar" Nullable="true" MaxLength="2" />
+    <Property Name="SubHeaderSize" Type="nchar" Nullable="true" MaxLength="2" />
+    <Property Name="ExtraText" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="ContentSections">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Header" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="URL" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CreationDate" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ContentTypeId" Type="int" Nullable="false" />
+    <Property Name="RegistrantId" Type="int" Nullable="true" />
+    <Property Name="Active" Type="nvarchar" Nullable="true" MaxLength="50" />
+    <Property Name="Private" Type="nvarchar" Nullable="true" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="ContentTypes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Behavior" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Registrants">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="MI" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Company" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Occupation" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="HomePhone" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CellPhone" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Address1" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Address2" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="City" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="State" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ZipCode" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="WebsiteURL" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="TwitterURL" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="FacebookURL" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="LinkedInURL" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Comments" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <Association Name="FK_ContentSectionContentBody">
+    <End Role="ContentSections" Type="NESTModel.Store.ContentSections" Multiplicity="1" />
+    <End Role="ContentBodies" Type="NESTModel.Store.ContentBodies" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ContentSections">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ContentBodies">
+        <PropertyRef Name="ContentSection_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ContentSectionContentType">
+    <End Role="ContentTypes" Type="NESTModel.Store.ContentTypes" Multiplicity="1" />
+    <End Role="ContentSections" Type="NESTModel.Store.ContentSections" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ContentTypes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ContentSections">
+        <PropertyRef Name="ContentTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

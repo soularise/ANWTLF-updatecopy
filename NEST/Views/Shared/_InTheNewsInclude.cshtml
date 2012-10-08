@@ -1,0 +1,27 @@
+﻿@{
+    
+    var Model = NEST.Models.RSSReader.GetRssFeed();
+}
+
+<style>
+#main-content h2{color:#ffffff;background-color:#000000;width:560px;}
+#main-content h2,h3{padding-left:10px;padding-top:15px;padding-bottom:15px;}
+p {padding-left:10px;padding-top:0px;}
+</style>
+
+
+
+
+        @foreach (var item in Model)
+        {
+    
+    
+    
+            <h2 class="radius">@Html.Raw(item.Title)</h2>
+
+            <div style="margin-top:10px;padding:5px;font-family:Trebuchet MS;">@Html.Raw(item.Description)</div>
+    
+
+        }
+
+

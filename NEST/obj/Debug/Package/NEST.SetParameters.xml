@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <setParameter name="IIS Web Application Name" value="Default Web Site/NEST_deploy" />
+  <setParameter name="ApplicationServices-Web.config Connection String" value="Server=demojail.com;Database=ANWTLF;User ID=rer; Password=Sh0kma!" />
+  <setParameter name="NESTV1Entities-Web.config Connection String" value="metadata=res://*/Models.NESTMaster.csdl|res://*/Models.NESTMaster.ssdl|res://*/Models.NESTMaster.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=demojail.com;initial catalog=ANWTLF;persist security info=True;user id=rer;password=Sh0kma!;multipleactiveresultsets=True;App=EntityFramework&quot;" />
+</parameters>

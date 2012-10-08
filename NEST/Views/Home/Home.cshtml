@@ -1,0 +1,47 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Home Page";
+}
+<div class="main-inner">
+    <div id="main-content" class="radius">
+        
+        <div class="right-container">
+            <script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
+            <script>
+                new TWTR.Widget({
+                    version: 2,
+                    type: 'profile',
+                    rpp: 8,
+                    interval: 30000,
+                    width: 'auto',
+                    height: 500,
+                    theme: {
+                        shell: {
+                            background: '#333333',
+                            color: '#ffffff'
+                        },
+                        tweets: {
+                            background: '#000000',
+                            color: '#ffffff',
+                            links: '#d2232a'
+                        }
+                    },
+                    features: {
+                        scrollbar: false,
+                        loop: false,
+                        live: false,
+                        behavior: 'all'
+                    }
+                }).render().setUser('anwtlf').start();
+            </script>
+        
+        </div>
+        
+        
+        <div class="left-large-container">
+        @Html.Partial("~/views/shared/_IntheNewsInclude.cshtml")
+        </div>
+
+    </div>
+</div>
+
